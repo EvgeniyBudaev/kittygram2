@@ -34,6 +34,14 @@ class CatSerializer(serializers.ModelSerializer):
                   'age')
         read_only_fields = ('owner',)
 
+    # """Валидация на то, чтобы в БД не было двух и более записей, у которых имя кота и хозяина совпадают."""
+    validators = [
+        UniqueTogetherValidator(
+            queryset=Cat.objects.all(),
+            fields=('name', 'owner')
+        )
+    ]
+
     def get_age(self, obj):
         return dt.datetime.now().year - obj.birth_year
 
