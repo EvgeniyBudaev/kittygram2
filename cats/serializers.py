@@ -57,3 +57,10 @@ class CatSerializer(serializers.ModelSerializer):
         if not (year - 40 < value <= year):
             raise serializers.ValidationError('Проверьте год рождения!')
         return value
+
+    def validate(self, data):
+        """Валидация на уровне объекта."""
+        if data['color'] == data['name']:
+            raise serializers.ValidationError(
+                'Имя не может совпадать с цветом!')
+        return data
